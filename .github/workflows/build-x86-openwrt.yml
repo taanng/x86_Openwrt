@@ -24,8 +24,8 @@ on:
   push:
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
-  REPO_BRANCH: master
+  REPO_URL: https://github.com/immortalwrt/immortalwrt.git
+  REPO_BRANCH: openwrt-21.02
   FEEDS_CONF: X86/feeds.conf.default
   CONFIG_FILE: X86/.config
   DIY_P1_SH: X86/diy-part1.sh
@@ -159,7 +159,7 @@ jobs:
         files: ${{ env.FIRMWARE }}/*
 
     - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@v2.0.3
+      uses: Mattraks/delete-workflow-runs@v2.0.4
       with:
           retain_days: 2
           keep_minimum_runs: 1
