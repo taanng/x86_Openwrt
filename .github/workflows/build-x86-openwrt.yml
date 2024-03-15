@@ -24,8 +24,8 @@ on:
   push:
 
 env:
-  REPO_URL: https://github.com/immortalwrt/immortalwrt.git
-  REPO_BRANCH: openwrt-23.05
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
   FEEDS_CONF: X86/feeds.conf.default
   CONFIG_FILE: X86/.config
   DIY_P1_SH: X86/diy-part1.sh
@@ -106,7 +106,7 @@ jobs:
       run: |
         cd $WORK_DIR
         echo -e "$(nproc) thread compile"
-        make V=s -j$(nproc)
+        make V=s -j1
         echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
@@ -130,6 +130,7 @@ jobs:
         cd $WORK_DIR/bin/targets/*/*
         shopt -s extglob
         rm -rf !(*.gz)
+        rm -rf *rootfs.*
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
