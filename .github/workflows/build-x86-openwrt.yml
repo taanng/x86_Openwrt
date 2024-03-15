@@ -24,8 +24,8 @@ on:
   push:
 
 env:
-  REPO_URL: https://github.com/immortalwrt/immortalwrt.git
-  REPO_BRANCH: openwrt-23.05
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
   FEEDS_CONF: X86/feeds.conf.default
   CONFIG_FILE: X86/.config
   DIY_P1_SH: X86/diy-part1.sh
@@ -130,6 +130,7 @@ jobs:
         cd $WORK_DIR/bin/targets/*/*
         shopt -s extglob
         rm -rf !(*.gz)
+        rm *rootfs.*
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
