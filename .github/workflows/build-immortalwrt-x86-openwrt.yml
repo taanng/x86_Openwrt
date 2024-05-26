@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build X86 OpenWrt
+name: Build immortalwrt X86 OpenWrt
 
 on:
   repository_dispatch:
@@ -20,16 +20,16 @@ on:
         required: false
         default: 'false'
   schedule:
-    - cron: 0 19 * * *
+    - cron: 0 20 * * *
   push:
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
-  REPO_BRANCH: master
-  FEEDS_CONF: X86/feeds.conf.default
-  CONFIG_FILE: X86/.config
-  DIY_P1_SH: X86/diy-part1.sh
-  DIY_P2_SH: X86/diy-part2.sh
+  REPO_URL: https://github.com/immortalwrt/immortalwrt
+  REPO_BRANCH: openwrt-23.05
+  FEEDS_CONF: X86/immortalwrt/feeds.conf.default
+  CONFIG_FILE: X86/immortalwrt/.config
+  DIY_P1_SH: X86/immortalwrt/diy-part1.sh
+  DIY_P2_SH: X86/immortalwrt/diy-part2.sh
   WORK_DIR: X86_openwrt
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
@@ -77,8 +77,6 @@ jobs:
     - name: Install feeds
       run: | 
         cd $WORK_DIR && ./scripts/feeds install -a
-        rm -rf feeds/packages/lang/golang
-        git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
 
     - name: Load custom configuration
       run: |
@@ -121,7 +119,7 @@ jobs:
 
     - name: Upload bin directory
       uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+      if: steps.compile.outputs.status == 'success' && env.UPLhomeproxyOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: $WORK_DIR/bin
@@ -148,7 +146,7 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "release_tag=X86-$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+        echo "release_tag=immortalwrt-X86-$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
